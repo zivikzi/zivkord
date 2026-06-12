@@ -1,0 +1,35 @@
+{
+  "name": "zivkord",
+  "version": "1.0.0",
+  "description": "Nuke your own Discord messages without trusting a sketchy website.",
+  "author": "ZVK",
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "icons": "node tools/gen-icons.js",
+    "dist": "npm run icons && electron-builder",
+    "portable": "npm run icons && electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^42.0.0",
+    "electron-builder": "^25.1.8",
+    "png-to-ico": "^2.1.8",
+    "sharp": "^0.33.5"
+  },
+  "build": {
+    "appId": "com.zvk.zivkord",
+    "productName": "ZiVKord",
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "src/**/*", "assets/**/*", "docs/**/*", "LICENSE", "package.json"],
+    "win": {
+      "icon": "assets/logo.ico",
+      "target": ["portable", "nsis"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false
+    }
+  }
+}
