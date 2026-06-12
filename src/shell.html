@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+<title>ZiVKord</title>
+<link rel="stylesheet" href="shell.css" />
+</head>
+<body>
+  <header id="topbar">
+    <img id="logo" src="../assets/logo.svg" alt="" />
+    <div class="brand">
+      <span class="name">ZiVKord</span>
+      <span class="tag">your messages, gone, on your terms</span>
+    </div>
+    <button id="coffee" class="coffee">☕ Buy me a coffee?</button>
+    <div id="conn" class="pill warn">connecting…</div>
+
+    <div id="coffeeBox" class="coffeebox hidden">
+      <div class="cb-title">Ta! Send Bitcoin Here:</div>
+      <code id="btcAddr">bc1qwr5cxthphfjekjl28m0sk8vyh363d6fdyzevjl</code>
+      <div class="cb-actions">
+        <button id="btcCopy">Copy</button>
+        <button id="btcHide" class="ghostmini">Hide</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="layout">
+    <section id="panel">
+      <div class="card">
+        <h2>Where</h2>
+        <label class="row">
+          <input type="radio" name="target" value="current" checked />
+          <span>Whatever channel I'm looking at</span>
+        </label>
+        <label class="row">
+          <input type="radio" name="target" value="manual" />
+          <span>A specific server / channel</span>
+        </label>
+        <div id="manualIds" class="hidden">
+          <input id="guildId" class="text" placeholder="Server ID (blank = a DM)" />
+          <input id="channelId" class="text" placeholder="Channel ID" />
+        </div>
+        <p id="ctxLine" class="hint">...</p>
+      </div>
+
+      <div class="card">
+        <h2>Whose</h2>
+        <label class="row locked">
+          <input type="checkbox" checked disabled />
+          <span>Only my own messages</span>
+        </label>
+        <p class="hint">ZiVKord won't touch anyone else's messages. That's the
+          whole point and it's wired shut.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="collapser" data-target="filters">Only if… <span class="chev">▾</span></h2>
+        <div id="filters" class="collapse">
+          <input id="content" class="text" placeholder="contains these words (optional)" />
+          <div class="checks">
+            <label><input type="checkbox" id="hasLink" /> has a link</label>
+            <label><input type="checkbox" id="hasFile" /> has a file</label>
+            <label><input type="checkbox" id="hasEmbed" /> has an embed</label>
+          </div>
+          <div class="dates">
+            <label>after <input id="afterDate" class="text" type="date" /></label>
+            <label>before <input id="beforeDate" class="text" type="date" /></label>
+          </div>
+          <label class="limitRow">only the most recent
+            <input id="limit" class="text" type="number" min="0" placeholder="0"
+              style="width: 5em; display: inline-block" />
+            messages <span class="hint">(0 = all)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="collapser" data-target="pacing">Pace <span class="chev">▾</span></h2>
+        <div id="pacing" class="collapse open">
+          <p class="hint">Slower is safer. Going too fast looks like a bot and
+            can get your account flagged.</p>
+          <label class="slider">
+            gap between deletes: <b id="delayLabel">0.9-1.8s</b>
+            <input id="speed" type="range" min="0" max="3" value="1" />
+          </label>
+          <label class="row">
+            <input type="checkbox" id="batchOn" checked />
+            <span>Take a long break between batches</span>
+          </label>
+          <div id="batchOpts" class="batchopts">
+            <label>every <input id="batchSize" class="text" type="number" min="1" value="25" /> deletes</label>
+            <label>rest <input id="batchRest" class="text" type="number" min="1" value="1" /> min</label>
+          </div>
+          <label class="row">
+            <input type="checkbox" id="dryRun" />
+            <span>Dry run (just count, delete nothing)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="go" class="primary">Delete my messages</button>
+        <button id="stop" class="ghost" disabled>Stop</button>
+      </div>
+
+      <div class="card stats">
+        <div class="bar"><div id="barFill"></div></div>
+        <div class="counts">
+          <span>found <b id="cFound">0</b></span>
+          <span class="ok">gone <b id="cDeleted">0</b></span>
+          <span class="muted">skipped <b id="cSkipped">0</b></span>
+          <span class="bad">failed <b id="cFailed">0</b></span>
+        </div>
+        <div id="log" class="log"></div>
+      </div>
+    </section>
+
+    <section id="viewport">
+      <webview id="discord" src="https://discord.com/app"
+               partition="zivkord" allowpopups></webview>
+    </section>
+  </main>
+
+  <script src="shell.js"></script>
+</body>
+</html>
